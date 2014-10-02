@@ -31,7 +31,7 @@ var _ = Describe("Price", func() {
 	Describe("Multiplying a price", func() {
 		Context("A $10.00USD item multiplied by 2", func() {
 			It("Should be $20.00USD", func() {
-				Expect(additionPriceA.Times(2)).To(Equal(expectedPriceC))
+				Expect(additionPriceA.Multiply(2)).To(Equal(expectedPriceC))
 			})
 		})
 	})

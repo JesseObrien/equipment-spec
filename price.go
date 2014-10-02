@@ -27,7 +27,7 @@ func (price *Price) Add(other *Price) *Price {
 	return PriceFromInt(price.value+other.value, price.currency)
 }
 
-func (price *Price) Times(multiplier float64) *Price {
+func (price *Price) Multiply(multiplier float64) *Price {
 	v := float64(price.value) * multiplier
 	return PriceFromInt(int(v), price.currency)
 }
