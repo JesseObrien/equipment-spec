@@ -11,13 +11,15 @@ type RentalPeriod struct {
 	endDate   time.Time
 }
 
+func RentalPeriodFomeTimes(start time.Time, end time.Time) *RentalPeriod {
+	return &RentalPeriod{startDate: start, endDate: end}
+}
+
 func RentalPeriodFromString(start string, end string) (*RentalPeriod, error, error) {
 
 	s, startErr := time.Parse(RentalPeriodFormat, start)
 
 	e, endErr := time.Parse(RentalPeriodFormat, end)
-
-	// @TODO Deal with errors here
 
 	return &RentalPeriod{
 		startDate: s,
@@ -34,9 +36,8 @@ func (rp *RentalPeriod) IsWithinPeriod(p time.Time) bool {
 	return rp.startDate.Before(p) && rp.endDate.After(p)
 }
 
-// @TODO fix this
 func (rp *RentalPeriod) DurationInDays() int {
-	return 1
+	return int(rp.Duration().Hours() / 24.0)
 }
 
 func (rp *RentalPeriod) Duration() time.Duration {

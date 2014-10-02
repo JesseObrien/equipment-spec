@@ -29,7 +29,7 @@ var _ = Describe("Rentalperiod", func() {
 
 	})
 
-	Describe("Compare two Rental Periods", func() {
+	Describe("Comparing Rental Periods", func() {
 		Context("Two Rental Periods from 2014/10/1 to 2014/10/2", func() {
 			It("Should be equal", func() {
 				Expect(firstPeriod.Equal(secondPeriod)).To(Equal(true))
@@ -37,12 +37,22 @@ var _ = Describe("Rentalperiod", func() {
 		})
 	})
 
-	Describe("Verify a date is within a rental period", func() {
+	Describe("Verify dates on Rental Periods", func() {
 		Context("A rental period from 2014/10/02 11:00", func() {
 			It("Should be within 2014/10/01 11:39 - 2014/10/02 12:00", func() {
 
 				var aNewPeriod, _ = time.Parse(RentalPeriodFormat, "2014/10/02 10:00 (EST)")
 				Expect(firstPeriod.IsWithinPeriod(aNewPeriod)).To(Equal(true))
+			})
+		})
+
+		Context("A rental period from 2014/10/01 00:00 to 2014/10/03 00:00", func() {
+			It("Should have a duration of two days", func() {
+				var twoDayPeriod, startErr, endErr = RentalPeriodFromString("2014/10/01 01:00 (EST)", "2014/10/03 01:00 (EST)")
+
+				Expect(startErr).NotTo(HaveOccurred())
+				Expect(endErr).NotTo(HaveOccurred())
+				Expect(twoDayPeriod.DurationInDays()).To(Equal(2))
 			})
 		})
 	})
