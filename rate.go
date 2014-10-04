@@ -1,19 +1,21 @@
 package equipment_spec
 
 type Rate struct {
-	price        Price
-	rentalPeriod RentalPeriod
+	Price        Price
+	RentalPeriod RentalPeriod
 }
 
-func (rate *Rate) getPrice() Price {
-	return rate.price
+func (rate *Rate) GetPrice() Price {
+	return rate.Price
 }
 
-func (rate *Rate) getPriceForDays(days int) {
-	var total = PriceFromInt(0, rate.price.currency)
+func (rate *Rate) PriceForDays(days int) Price {
+	var total = PriceFromInt(0, rate.Price.Currency)
 
 	for days > 0 {
 		days = days - 1
-		total = total.Add(&rate.price)
+		total = total.Add(&rate.Price)
 	}
+
+	return *total
 }

@@ -12,12 +12,25 @@ var _ = Describe("Rate", func() {
 	var standardRate *Rate
 
 	BeforeEach(func() {
-		var p, err = PriceFromString("1000", "CAD")
-		var rp, startErr, endErr = RentalPeriodFromString("2014/10/01 12:00 (EST)", "2014/10/02 12:00 (EST)")
+		var p, err = PriceFromString("1025", *CurrencyFromString("CAD"))
+		var rp, startErr, endErr = RentalPeriodFromString("2014/10/01 12:00 (EST)", "2014/10/03 12:00 (EST)")
+
 		Expect(err).NotTo(HaveOccurred())
 		Expect(startErr).NotTo(HaveOccurred())
 		Expect(endErr).NotTo(HaveOccurred())
-		standardRate = &Rate{price: p, rentalPeriod: rp}
+
+		standardRate = &Rate{Price: *p, RentalPeriod: *rp}
+	})
+
+	Describe("Determine rental rates", func() {
+		Context("Rate for 2 days @ $10.25/day", func() {
+			It("Should be $20.50", func() {
+				days := standardRate.RentalPeriod.DurationInDays()
+				price := standardRate.PriceForDays(days)
+
+				Expect(price.Value).To(Equal(2050))
+			})
+		})
 	})
 
 })
