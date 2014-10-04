@@ -8,22 +8,26 @@ import (
 )
 
 var _ = Describe("Price", func() {
+
 	var additionPriceA *Price
 	var additionPriceB *Price
-	var expectedPriceC *Price
+	var currency *Currency
 
 	BeforeEach(func() {
 		var err error
-		additionPriceA, err = PriceFromString("1000", "USD")
+		currency = CurrencyFromString("CAD")
+
+		additionPriceA, err = PriceFromString("1000", *currency)
 		Expect(err).NotTo(HaveOccurred())
-		additionPriceB = PriceFromInt(1000, "USD")
-		expectedPriceC = PriceFromInt(2000, "USD")
+		additionPriceB = PriceFromInt(1000, *currency)
 	})
 
 	Describe("Adding two prices", func() {
 		Context("Two $10.00USD items", func() {
 			It("Should be $20.00USD", func() {
-				Expect(additionPriceA.Add(additionPriceB)).To(Equal(expectedPriceC))
+				expectedPrice := PriceFromInt(2000, *currency)
+
+				Expect(additionPriceA.Add(additionPriceB)).To(Equal(expectedPrice))
 			})
 		})
 	})
@@ -31,7 +35,9 @@ var _ = Describe("Price", func() {
 	Describe("Multiplying a price", func() {
 		Context("A $10.00USD item multiplied by 2", func() {
 			It("Should be $20.00USD", func() {
-				Expect(additionPriceA.Multiply(2)).To(Equal(expectedPriceC))
+				expectedPrice := PriceFromInt(2000, *currency)
+
+				Expect(additionPriceA.Multiply(2)).To(Equal(expectedPrice))
 			})
 		})
 	})
